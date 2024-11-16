@@ -28,3 +28,4 @@ public/dist
 *.njsproj
 *.sln
 *.sw?
+.history
