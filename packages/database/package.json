@@ -8,7 +8,7 @@
     "prisma": "5.22.0"
   },
   "scripts": {
-    "db:start": "docker compsoe up -d",
+    "db:start": "docker compose up -d",
     "db:stop": "docker compose down",
     "db:generate": "prisma generate",
     "db:migrate": "prisma db push --skip-generate",
