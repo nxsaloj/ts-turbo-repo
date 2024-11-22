@@ -17,6 +17,21 @@
       "dependsOn": ["build"],
       "cache": false,
       "persistent": true
+    },
+    "db:start":{
+      "cache": false
+    },
+    "db:seed":{
+      "cache": false
+    },
+    "db:stop":{
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false
     }
   }
 }
