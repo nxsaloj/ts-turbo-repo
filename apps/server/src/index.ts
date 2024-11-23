@@ -66,6 +66,34 @@ app.post('/product', async (req, res) => {
   }
 })
 
+app.put('/product/:id', async (req, res) => {
+  const { id } = req.params
+  const { name, 
+          description, 
+          image, 
+          variants, 
+          options, 
+          collections
+        } = req.body
+
+  try {
+    const updatedProduct = await client.product.update({
+      where: { id: Number(id) },
+      data: {
+        name,
+        description,
+        image,
+        variants,
+        options,
+        collections
+      },
+    })
+    return res.json(updatedProduct)
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to update product' })
+  }
+})
+
 const port = process.env.PORT || 5001
 
 app.listen(port, () => {
