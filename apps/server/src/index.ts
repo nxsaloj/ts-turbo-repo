@@ -1,110 +1,17 @@
 import bodyParser from 'body-parser'
 import express from 'express'
 import cors from 'cors'
-import { PrismaClient } from '../../../packages/database/prisma/prisma-client'
+import { productsRoute } from './routes/products'
 
 const app = express()
-const client = new PrismaClient();
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors())
+productsRoute(app)
 
 app.get('/', (_, res) => {
   return res.json({ ok: true })
-})
-
-app.get('/product/:id', async (req, res) => {
-  const { id } = req.params
-
-  try {
-    const product = await client.product.findUnique({
-      where: { id: Number(id) },
-    })
-    if (product) {
-      return res.json(product)
-    } else {
-      return res.status(404).json({ error: 'Product not found' })
-    }
-  } catch (error) {
-    return res.status(500).json({ error: 'Failed to fetch product' })
-  }
-})
-
-app.get('/products', async (_, res) => {
-  try {
-    const products = await client.product.findMany()
-    return res.json(products)
-  } catch (error) {
-    return res.status(500).json({ error: 'Failed to fetch products' })
-  }
-})
-
-app.post('/product', async (req, res) => {
-  const { name, 
-          description, 
-          image, 
-          variants, 
-          options, 
-          collections
-        } = req.body
-
-  try {
-    const newProduct = await client.product.create({
-      data: {
-        name,
-        description,
-        image,
-        variants,
-        options,
-        collections
-      },
-    })
-    return res.status(201).json(newProduct)
-  } catch (error) {
-    return res.status(500).json({ error: 'Failed to create product '+error })
-  }
-})
-
-app.put('/product/:id', async (req, res) => {
-  const { id } = req.params
-  const { name, 
-          description, 
-          image, 
-          variants, 
-          options, 
-          collections
-        } = req.body
-
-  try {
-    const updatedProduct = await client.product.update({
-      where: { id: Number(id) },
-      data: {
-        name,
-        description,
-        image,
-        variants,
-        options,
-        collections
-      },
-    })
-    return res.json(updatedProduct)
-  } catch (error) {
-    return res.status(500).json({ error: 'Failed to update product' })
-  }
-})
-
-app.delete('/product/:id', async (req, res) => {
-  const { id } = req.params
-
-  try {
-    await client.product.delete({
-      where: { id: Number(id) },
-    })
-    return res.status(204).send()
-  } catch (error) {
-    return res.status(500).json({ error: 'Failed to delete product' })
-  }
 })
 
 const port = process.env.PORT || 5001
