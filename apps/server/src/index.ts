@@ -94,6 +94,19 @@ app.put('/product/:id', async (req, res) => {
   }
 })
 
+app.delete('/product/:id', async (req, res) => {
+  const { id } = req.params
+
+  try {
+    await client.product.delete({
+      where: { id: Number(id) },
+    })
+    return res.status(204).send()
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to delete product' })
+  }
+})
+
 const port = process.env.PORT || 5001
 
 app.listen(port, () => {
