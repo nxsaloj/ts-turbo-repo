@@ -31,6 +31,14 @@ app.get('/product/:id', async (req, res) => {
   }
 })
 
+app.get('/products', async (_, res) => {
+  try {
+    const products = await client.product.findMany()
+    return res.json(products)
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to fetch products' })
+  }
+})
 
 const port = process.env.PORT || 5001
 
