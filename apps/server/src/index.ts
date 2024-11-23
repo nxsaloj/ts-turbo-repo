@@ -1,8 +1,10 @@
 import bodyParser from 'body-parser'
 import express from 'express'
 import cors from 'cors'
+import { PrismaClient } from '../../../packages/database/prisma/prisma-client'
 
 const app = express()
+const client = new PrismaClient();
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
