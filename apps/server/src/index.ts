@@ -40,6 +40,32 @@ app.get('/products', async (_, res) => {
   }
 })
 
+app.post('/product', async (req, res) => {
+  const { name, 
+          description, 
+          image, 
+          variants, 
+          options, 
+          collections
+        } = req.body
+
+  try {
+    const newProduct = await client.product.create({
+      data: {
+        name,
+        description,
+        image,
+        variants,
+        options,
+        collections
+      },
+    })
+    return res.status(201).json(newProduct)
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to create product '+error })
+  }
+})
+
 const port = process.env.PORT || 5001
 
 app.listen(port, () => {
